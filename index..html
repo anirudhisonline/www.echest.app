@@ -15,6 +15,7 @@
         />
         <script>
             tailwind.config = {
+                darkMode: "class",
                 theme: {
                     extend: {
                         colors: {
@@ -56,553 +57,857 @@
             * {
                 font-family: "DM Sans", ui-sans-serif, system-ui;
             }
+
+            .dark {
+                --background: oklch(0.1448 0 0);
+                --foreground: oklch(0.9851 0 0);
+                --border: oklch(0.3407 0 0);
+                --input: oklch(0.4386 0 0);
+                --ring: oklch(0.5555 0 0);
+                --muted: oklch(0.2686 0 0);
+                --muted-foreground: oklch(0.709 0 0);
+                --accent: oklch(0.9606 0.191 108.5563);
+                --accent-foreground: oklch(0 0 0);
+            }
+
+            .dark {
+                background: var(--background);
+                color: var(--foreground);
+            }
+
+            /* Chest Opening Animation */
+            #chest-loader {
+                position: fixed;
+                inset: 0;
+                z-index: 9999;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                background: oklch(1 0 0);
+                transition: background 0.3s;
+            }
+
+            .dark #chest-loader {
+                background: oklch(0.1448 0 0);
+            }
+
+            .chest-container {
+                width: 300px;
+                height: 300px;
+                position: relative;
+            }
+
+            .chest-bottom {
+                position: absolute;
+                bottom: 5%;
+                left: 50%;
+                transform: translateX(-50%);
+            }
+
+            .chest-top {
+                position: absolute;
+                bottom: 50%;
+                left: 50%;
+                transform: translateX(-50%);
+                transform-origin: bottom left;
+            }
+
+            #main-content {
+                opacity: 0;
+            }
         </style>
     </head>
     <body class="bg-background text-foreground antialiased">
-        <!-- Hero Section -->
-        <section
-            class="min-h-screen flex items-center justify-center px-4 py-20"
-        >
-            <div class="max-w-5xl w-full text-center">
-                <!-- Logo -->
-                <div class="logo-container inline-block mb-8">
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="80"
-                        height="80"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="1.5"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        class="text-primary mx-auto"
-                    >
-                        <polyline points="22 12 16 12 14 15 10 15 8 12 2 12" />
-                        <path
-                            d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"
-                        />
-                    </svg>
-                </div>
-
-                <!-- Title -->
-                <h1
-                    class="hero-title text-5xl md:text-7xl font-bold mb-6 tracking-tight"
+        <!-- Chest Opening Loader -->
+        <div id="chest-loader">
+            <div class="chest-container">
+                <!-- Bottom of chest -->
+                <svg
+                    class="chest-bottom"
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="240"
+                    height="140"
+                    viewBox="0 0 240 140"
                 >
-                    echest
-                </h1>
+                    <!-- Main body -->
+                    <rect
+                        x="20"
+                        y="0"
+                        width="200"
+                        height="120"
+                        rx="8"
+                        fill="#1a1a1a"
+                        stroke="#0a0a0a"
+                        stroke-width="3"
+                    />
+                    <!-- Front panel darker -->
+                    <rect
+                        x="30"
+                        y="10"
+                        width="180"
+                        height="100"
+                        rx="6"
+                        fill="#0f0f0f"
+                    />
+                    <!-- Accent bands -->
+                    <rect x="25" y="30" width="190" height="8" fill="#2a2a2a" />
+                    <rect x="25" y="80" width="190" height="8" fill="#2a2a2a" />
+                    <!-- Center glow area -->
+                    <rect
+                        x="110"
+                        y="45"
+                        width="20"
+                        height="30"
+                        rx="3"
+                        fill="currentColor"
+                        opacity="0.3"
+                        class="text-accent"
+                    />
+                    <!-- Obsidian texture -->
+                    <rect
+                        x="40"
+                        y="20"
+                        width="4"
+                        height="4"
+                        fill="#2a2a2a"
+                        opacity="0.6"
+                    />
+                    <rect
+                        x="190"
+                        y="25"
+                        width="3"
+                        height="3"
+                        fill="#2a2a2a"
+                        opacity="0.6"
+                    />
+                    <rect
+                        x="50"
+                        y="95"
+                        width="4"
+                        height="4"
+                        fill="#2a2a2a"
+                        opacity="0.6"
+                    />
+                </svg>
 
-                <!-- Tagline -->
-                <p
-                    class="hero-subtitle text-xl md:text-2xl text-muted-foreground mb-4"
+                <!-- Top of chest (lid) -->
+                <svg
+                    class="chest-top"
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="240"
+                    height="100"
+                    viewBox="0 0 240 100"
                 >
-                    Your magical, collaborative inventory.
-                </p>
-
-                <!-- Description -->
-                <p
-                    class="hero-description text-base md:text-lg text-muted-foreground mb-8 max-w-2xl mx-auto"
-                >
-                    Store anything. Find everything. Share instantly. A
-                    real-time, multi-device inventory for your digital life.
-                </p>
-
-                <!-- Hackathon Badge -->
-                <div
-                    class="badge inline-flex items-center gap-2 px-4 py-2 rounded-full border border-border bg-muted text-sm font-medium mb-8"
-                >
-                    <span>🔮</span>
-                    <span>Built for TanStack × Convex Hackathon</span>
-                </div>
-
-                <!-- CTA Buttons -->
-                <div
-                    class="cta-buttons flex flex-col sm:flex-row gap-4 justify-center mb-8"
-                >
-                    <a
-                        href="https://demo.echest.app/"
-                        class="inline-flex items-center justify-center px-8 py-3 rounded-lg bg-primary text-primary-foreground font-medium hover:opacity-90 transition-opacity"
-                    >
-                        Sign in with GitHub
-                    </a>
-                    <a
-                        href="https://demo.echest.app/"
-                        class="inline-flex items-center justify-center px-8 py-3 rounded-lg border border-input bg-background font-medium hover:bg-muted transition-colors"
-                    >
-                        Try anonymously
-                    </a>
-                </div>
-
-                <!-- Demo Notice -->
-                <div
-                    class="demo-notice max-w-2xl mx-auto px-6 py-4 rounded-lg bg-accent/10 border border-accent/20"
-                >
-                    <p class="text-sm text-accent-foreground">
-                        <strong>Demo Notice:</strong> This is a hackathon
-                        demonstration. While fully functional, it's temporary
-                        and may be taken down. Please don't store critical data
-                        here long-term.
-                    </p>
-                </div>
+                    <!-- Lid body -->
+                    <rect
+                        x="20"
+                        y="30"
+                        width="200"
+                        height="70"
+                        rx="8"
+                        fill="#1a1a1a"
+                        stroke="#0a0a0a"
+                        stroke-width="3"
+                    />
+                    <!-- Lid front darker -->
+                    <rect
+                        x="30"
+                        y="40"
+                        width="180"
+                        height="50"
+                        rx="6"
+                        fill="#0f0f0f"
+                    />
+                    <!-- Lid accent band -->
+                    <rect x="25" y="60" width="190" height="8" fill="#2a2a2a" />
+                    <!-- Lock/latch area -->
+                    <circle
+                        cx="120"
+                        cy="70"
+                        r="12"
+                        fill="currentColor"
+                        opacity="0.4"
+                        class="text-accent"
+                    />
+                    <circle
+                        cx="120"
+                        cy="70"
+                        r="6"
+                        fill="currentColor"
+                        class="text-accent"
+                    />
+                    <!-- Purple particles -->
+                    <circle
+                        cx="95"
+                        cy="50"
+                        r="3"
+                        fill="currentColor"
+                        opacity="0.7"
+                        class="text-secondary"
+                    />
+                    <circle
+                        cx="145"
+                        cy="55"
+                        r="2.5"
+                        fill="currentColor"
+                        opacity="0.7"
+                        class="text-secondary"
+                    />
+                    <!-- Obsidian texture on lid -->
+                    <rect
+                        x="45"
+                        y="45"
+                        width="4"
+                        height="4"
+                        fill="#2a2a2a"
+                        opacity="0.6"
+                    />
+                    <rect
+                        x="185"
+                        y="50"
+                        width="3"
+                        height="3"
+                        fill="#2a2a2a"
+                        opacity="0.6"
+                    />
+                </svg>
             </div>
-        </section>
+        </div>
 
-        <!-- Features Section -->
-        <section class="py-20 px-4 bg-muted/30">
-            <div class="max-w-6xl mx-auto">
-                <h2
-                    class="features-title text-3xl md:text-4xl font-bold text-center mb-16"
-                >
-                    Core Features
-                </h2>
-
-                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    <!-- Feature Cards -->
-                    <div
-                        class="feature-card p-6 rounded-lg border border-border bg-background hover:border-primary/50 transition-colors"
-                    >
-                        <div class="text-4xl mb-4">🧰</div>
-                        <h3 class="text-xl font-semibold mb-2">
-                            A magical chest for all your things
-                        </h3>
-                        <p
-                            class="text-muted-foreground text-sm leading-relaxed"
-                        >
-                            Notes, links, tasks, images — all organized inside a
-                            single enchanted inventory. No limits. Just drop
-                            things in and retrieve them instantly.
-                        </p>
-                    </div>
-
-                    <div
-                        class="feature-card p-6 rounded-lg border border-border bg-background hover:border-primary/50 transition-colors"
-                    >
-                        <div class="text-4xl mb-4">📡</div>
-                        <h3 class="text-xl font-semibold mb-2">
-                            Real-time collaboration
-                        </h3>
-                        <p
-                            class="text-muted-foreground text-sm leading-relaxed"
-                        >
-                            Open the same chest with teammates — changes appear
-                            live, instantly. Perfect for hackathons, research,
-                            and shared knowledge.
-                        </p>
-                    </div>
-
-                    <div
-                        class="feature-card p-6 rounded-lg border border-border bg-background hover:border-primary/50 transition-colors"
-                    >
-                        <div class="text-4xl mb-4">🧪</div>
-                        <h3 class="text-xl font-semibold mb-2">
-                            Two ways to get started
-                        </h3>
-                        <p
-                            class="text-muted-foreground text-sm leading-relaxed"
-                        >
-                            GitHub Login for full features or Anonymous Mode to
-                            try instantly. No commitment. No friction. Just
-                            magic.
-                        </p>
-                    </div>
-
-                    <div
-                        class="feature-card p-6 rounded-lg border border-border bg-background hover:border-primary/50 transition-colors"
-                    >
-                        <div class="text-4xl mb-4">🔍</div>
-                        <h3 class="text-xl font-semibold mb-2">
-                            Lightning-fast filters & tags
-                        </h3>
-                        <p
-                            class="text-muted-foreground text-sm leading-relaxed"
-                        >
-                            Keep organized with tag filters, global search, time
-                            filters, recently used tags, and local filter
-                            presets.
-                        </p>
-                    </div>
-
-                    <div
-                        class="feature-card p-6 rounded-lg border border-border bg-background hover:border-primary/50 transition-colors"
-                    >
-                        <div class="text-4xl mb-4">🧩</div>
-                        <h3 class="text-xl font-semibold mb-2">
-                            Multi-device magic
-                        </h3>
-                        <p
-                            class="text-muted-foreground text-sm leading-relaxed"
-                        >
-                            Your chest updates in real time across all devices —
-                            no refresh needed. Access your inventory anywhere.
-                        </p>
-                    </div>
-
-                    <div
-                        class="feature-card p-6 rounded-lg border border-border bg-background hover:border-primary/50 transition-colors"
-                    >
-                        <div class="text-4xl mb-4">🔐</div>
-                        <h3 class="text-xl font-semibold mb-2">
-                            Private & secure
-                        </h3>
-                        <p
-                            class="text-muted-foreground text-sm leading-relaxed"
-                        >
-                            Your items stay yours. Share a chest only with
-                            collaborators you trust. Full control over your
-                            data.
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- How It Works -->
-        <section class="py-20 px-4">
-            <div class="max-w-4xl mx-auto">
-                <h2
-                    class="steps-title text-3xl md:text-4xl font-bold text-center mb-16"
-                >
-                    How It Works
-                </h2>
-
-                <div class="space-y-8">
-                    <div class="step-item flex gap-6 items-start">
-                        <div
-                            class="flex-shrink-0 w-12 h-12 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-bold text-lg"
-                        >
-                            1
-                        </div>
-                        <div>
-                            <h3 class="text-xl font-semibold mb-2">
-                                Choose how to start
-                            </h3>
-                            <p class="text-muted-foreground">
-                                GitHub Login for full features or Anonymous Mode
-                                to explore instantly
-                            </p>
-                        </div>
-                    </div>
-
-                    <div class="step-item flex gap-6 items-start">
-                        <div
-                            class="flex-shrink-0 w-12 h-12 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-bold text-lg"
-                        >
-                            2
-                        </div>
-                        <div>
-                            <h3 class="text-xl font-semibold mb-2">
-                                Create your echest
-                            </h3>
-                            <p class="text-muted-foreground">
-                                Your personal magical vault for anything
-                            </p>
-                        </div>
-                    </div>
-
-                    <div class="step-item flex gap-6 items-start">
-                        <div
-                            class="flex-shrink-0 w-12 h-12 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-bold text-lg"
-                        >
-                            3
-                        </div>
-                        <div>
-                            <h3 class="text-xl font-semibold mb-2">
-                                Add unlimited items
-                            </h3>
-                            <p class="text-muted-foreground">
-                                Notes, tasks, links, and images — instantly
-                            </p>
-                        </div>
-                    </div>
-
-                    <div class="step-item flex gap-6 items-start">
-                        <div
-                            class="flex-shrink-0 w-12 h-12 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-bold text-lg"
-                        >
-                            4
-                        </div>
-                        <div>
-                            <h3 class="text-xl font-semibold mb-2">
-                                Invite collaborators
-                            </h3>
-                            <p class="text-muted-foreground">
-                                Build shared inventories in real time
-                            </p>
-                        </div>
-                    </div>
-
-                    <div class="step-item flex gap-6 items-start">
-                        <div
-                            class="flex-shrink-0 w-12 h-12 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-bold text-lg"
-                        >
-                            5
-                        </div>
-                        <div>
-                            <h3 class="text-xl font-semibold mb-2">
-                                Filter, search, tag, organize
-                            </h3>
-                            <p class="text-muted-foreground">
-                                Find anything in seconds
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Tech Stack -->
-        <section class="py-20 px-4 bg-muted/30">
-            <div class="max-w-5xl mx-auto">
-                <h2
-                    class="tech-title text-3xl md:text-4xl font-bold text-center mb-4"
-                >
-                    Built with the modern stack
-                </h2>
-                <p class="text-center text-muted-foreground mb-16">
-                    Showcasing the power of cutting-edge technologies
-                </p>
-
-                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    <div
-                        class="tech-card p-6 rounded-lg border border-border bg-background text-center"
-                    >
-                        <h3 class="text-lg font-semibold mb-2">
-                            TanStack Start
-                        </h3>
-                        <p class="text-sm text-muted-foreground">
-                            File-based routing, streaming, fast DX
-                        </p>
-                    </div>
-
-                    <div
-                        class="tech-card p-6 rounded-lg border border-border bg-background text-center"
-                    >
-                        <h3 class="text-lg font-semibold mb-2">Convex</h3>
-                        <p class="text-sm text-muted-foreground">
-                            Real-time database + backend sync
-                        </p>
-                    </div>
-
-                    <div
-                        class="tech-card p-6 rounded-lg border border-border bg-background text-center"
-                    >
-                        <h3 class="text-lg font-semibold mb-2">
-                            Cloudflare & Netlify
-                        </h3>
-                        <p class="text-sm text-muted-foreground">
-                            Fast, globally distributed hosting
-                        </p>
-                    </div>
-
-                    <div
-                        class="tech-card p-6 rounded-lg border border-border bg-background text-center"
-                    >
-                        <h3 class="text-lg font-semibold mb-2">Sentry</h3>
-                        <p class="text-sm text-muted-foreground">
-                            Crash-free magical experience
-                        </p>
-                    </div>
-
-                    <div
-                        class="tech-card p-6 rounded-lg border border-border bg-background text-center"
-                    >
-                        <h3 class="text-lg font-semibold mb-2">CodeRabbit</h3>
-                        <p class="text-sm text-muted-foreground">
-                            AI-powered PR reviews
-                        </p>
-                    </div>
-
-                    <div
-                        class="tech-card p-6 rounded-lg border border-border bg-background text-center"
-                    >
-                        <h3 class="text-lg font-semibold mb-2">Open Source</h3>
-                        <p class="text-sm text-muted-foreground">
-                            100% open, fork & remix
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- CTA Section -->
-        <section class="py-20 px-4">
-            <div class="max-w-3xl mx-auto text-center">
-                <h2 class="cta-title text-3xl md:text-5xl font-bold mb-6">
-                    Open your magical inventory today
-                </h2>
-                <p class="text-lg text-muted-foreground mb-8">
-                    Collaborative storage for anything — with real-time
-                    enchantment.
-                </p>
-
-                <div
-                    class="cta-final flex flex-col sm:flex-row gap-4 justify-center mb-8"
-                >
-                    <a
-                        href="https://demo.echest.app/"
-                        class="inline-flex items-center justify-center px-8 py-3 rounded-lg bg-primary text-primary-foreground font-medium hover:opacity-90 transition-opacity"
-                    >
-                        Sign in with GitHub
-                    </a>
-                    <a
-                        href="https://demo.echest.app/"
-                        class="inline-flex items-center justify-center px-8 py-3 rounded-lg border border-input bg-background font-medium hover:bg-muted transition-colors"
-                    >
-                        Try anonymously
-                    </a>
-                </div>
-
-                <a
-                    href="https://github.com/anirudhisonline/echest.app"
-                    class="github-link text-muted-foreground hover:text-foreground transition-colors text-sm"
-                >
-                    View on GitHub →
-                </a>
-            </div>
-        </section>
-
-        <!-- Footer -->
-        <footer class="py-8 px-4 border-t border-border">
-            <div
-                class="max-w-6xl mx-auto text-center text-sm text-muted-foreground"
+        <!-- Main Content -->
+        <div id="main-content">
+            <!-- Hero Section -->
+            <section
+                class="min-h-screen flex items-center justify-center px-4 py-20"
             >
-                <p>Built for the TanStack × Convex Hackathon</p>
-            </div>
-        </footer>
+                <div class="max-w-5xl w-full text-center">
+                    <!-- Logo -->
+                    <div class="logo-container inline-block mb-8">
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="80"
+                            height="80"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="1.5"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            class="text-primary mx-auto"
+                        >
+                            <polyline
+                                points="22 12 16 12 14 15 10 15 8 12 2 12"
+                            />
+                            <path
+                                d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"
+                            />
+                        </svg>
+                    </div>
+
+                    <!-- Title -->
+                    <h1
+                        class="hero-title text-5xl md:text-7xl font-bold mb-6 tracking-tight"
+                    >
+                        echest
+                    </h1>
+
+                    <!-- Tagline -->
+                    <p
+                        class="hero-subtitle text-xl md:text-2xl text-muted-foreground mb-4"
+                    >
+                        Your magical, collaborative inventory.
+                    </p>
+
+                    <!-- Description -->
+                    <p
+                        class="hero-description text-base md:text-lg text-muted-foreground mb-8 max-w-2xl mx-auto"
+                    >
+                        Store anything. Find everything. Share instantly. A
+                        real-time, multi-device inventory for your digital life.
+                    </p>
+
+                    <!-- Hackathon Badge -->
+                    <div
+                        class="badge inline-flex items-center gap-2 px-4 py-2 rounded-full border border-border bg-muted text-sm font-medium mb-8"
+                    >
+                        <span>🔮</span>
+                        <span>Built for TanStack × Convex Hackathon</span>
+                    </div>
+
+                    <!-- CTA Buttons -->
+                    <div
+                        class="cta-buttons flex flex-col sm:flex-row gap-4 justify-center mb-8"
+                    >
+                        <a
+                            href="https://demo.echest.app/"
+                            class="inline-flex items-center justify-center px-8 py-3 rounded-lg bg-primary text-primary-foreground font-medium hover:opacity-90 transition-opacity"
+                        >
+                            Sign in with GitHub
+                        </a>
+                        <a
+                            href="https://demo.echest.app/"
+                            class="inline-flex items-center justify-center px-8 py-3 rounded-lg border border-input bg-background font-medium hover:bg-muted transition-colors"
+                        >
+                            Try anonymously
+                        </a>
+                    </div>
+
+                    <!-- Demo Notice -->
+                    <div
+                        class="demo-notice max-w-2xl mx-auto px-6 py-4 rounded-lg bg-accent/10 border border-accent/20"
+                    >
+                        <p class="text-sm text-accent-foreground">
+                            <strong>Demo Notice:</strong> This is a hackathon
+                            demonstration. While fully functional, it's
+                            temporary and may be taken down. Please don't store
+                            critical data here long-term.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Features Section -->
+            <section class="py-20 px-4 bg-muted/30">
+                <div class="max-w-6xl mx-auto">
+                    <h2
+                        class="features-title text-3xl md:text-4xl font-bold text-center mb-16"
+                    >
+                        Core Features
+                    </h2>
+
+                    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <!-- Feature Cards -->
+                        <div
+                            class="feature-card p-6 rounded-lg border border-border bg-background hover:border-primary/50 transition-colors"
+                        >
+                            <div class="text-4xl mb-4">🧰</div>
+                            <h3 class="text-xl font-semibold mb-2">
+                                A magical chest for all your things
+                            </h3>
+                            <p
+                                class="text-muted-foreground text-sm leading-relaxed"
+                            >
+                                Notes, links, tasks, images — all organized
+                                inside a single enchanted inventory. No limits.
+                                Just drop things in and retrieve them instantly.
+                            </p>
+                        </div>
+
+                        <div
+                            class="feature-card p-6 rounded-lg border border-border bg-background hover:border-primary/50 transition-colors"
+                        >
+                            <div class="text-4xl mb-4">📡</div>
+                            <h3 class="text-xl font-semibold mb-2">
+                                Real-time collaboration
+                            </h3>
+                            <p
+                                class="text-muted-foreground text-sm leading-relaxed"
+                            >
+                                Open the same chest with teammates — changes
+                                appear live, instantly. Perfect for hackathons,
+                                research, and shared knowledge.
+                            </p>
+                        </div>
+
+                        <div
+                            class="feature-card p-6 rounded-lg border border-border bg-background hover:border-primary/50 transition-colors"
+                        >
+                            <div class="text-4xl mb-4">🧪</div>
+                            <h3 class="text-xl font-semibold mb-2">
+                                Two ways to get started
+                            </h3>
+                            <p
+                                class="text-muted-foreground text-sm leading-relaxed"
+                            >
+                                GitHub Login for full features or Anonymous Mode
+                                to try instantly. No commitment. No friction.
+                                Just magic.
+                            </p>
+                        </div>
+
+                        <div
+                            class="feature-card p-6 rounded-lg border border-border bg-background hover:border-primary/50 transition-colors"
+                        >
+                            <div class="text-4xl mb-4">🔍</div>
+                            <h3 class="text-xl font-semibold mb-2">
+                                Lightning-fast filters & tags
+                            </h3>
+                            <p
+                                class="text-muted-foreground text-sm leading-relaxed"
+                            >
+                                Keep organized with tag filters, global search,
+                                time filters, recently used tags, and local
+                                filter presets.
+                            </p>
+                        </div>
+
+                        <div
+                            class="feature-card p-6 rounded-lg border border-border bg-background hover:border-primary/50 transition-colors"
+                        >
+                            <div class="text-4xl mb-4">🧩</div>
+                            <h3 class="text-xl font-semibold mb-2">
+                                Multi-device magic
+                            </h3>
+                            <p
+                                class="text-muted-foreground text-sm leading-relaxed"
+                            >
+                                Your chest updates in real time across all
+                                devices — no refresh needed. Access your
+                                inventory anywhere.
+                            </p>
+                        </div>
+
+                        <div
+                            class="feature-card p-6 rounded-lg border border-border bg-background hover:border-primary/50 transition-colors"
+                        >
+                            <div class="text-4xl mb-4">🔐</div>
+                            <h3 class="text-xl font-semibold mb-2">
+                                Private & secure
+                            </h3>
+                            <p
+                                class="text-muted-foreground text-sm leading-relaxed"
+                            >
+                                Your items stay yours. Share a chest only with
+                                collaborators you trust. Full control over your
+                                data.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- How It Works -->
+            <section class="py-20 px-4">
+                <div class="max-w-4xl mx-auto">
+                    <h2
+                        class="steps-title text-3xl md:text-4xl font-bold text-center mb-16"
+                    >
+                        How It Works
+                    </h2>
+
+                    <div class="space-y-8">
+                        <div class="step-item flex gap-6 items-start">
+                            <div
+                                class="flex-shrink-0 w-12 h-12 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-bold text-lg"
+                            >
+                                1
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-semibold mb-2">
+                                    Choose how to start
+                                </h3>
+                                <p class="text-muted-foreground">
+                                    GitHub Login for full features or Anonymous
+                                    Mode to explore instantly
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="step-item flex gap-6 items-start">
+                            <div
+                                class="flex-shrink-0 w-12 h-12 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-bold text-lg"
+                            >
+                                2
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-semibold mb-2">
+                                    Create your echest
+                                </h3>
+                                <p class="text-muted-foreground">
+                                    Your personal magical vault for anything
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="step-item flex gap-6 items-start">
+                            <div
+                                class="flex-shrink-0 w-12 h-12 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-bold text-lg"
+                            >
+                                3
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-semibold mb-2">
+                                    Add unlimited items
+                                </h3>
+                                <p class="text-muted-foreground">
+                                    Notes, tasks, links, and images — instantly
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="step-item flex gap-6 items-start">
+                            <div
+                                class="flex-shrink-0 w-12 h-12 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-bold text-lg"
+                            >
+                                4
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-semibold mb-2">
+                                    Invite collaborators
+                                </h3>
+                                <p class="text-muted-foreground">
+                                    Build shared inventories in real time
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="step-item flex gap-6 items-start">
+                            <div
+                                class="flex-shrink-0 w-12 h-12 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-bold text-lg"
+                            >
+                                5
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-semibold mb-2">
+                                    Filter, search, tag, organize
+                                </h3>
+                                <p class="text-muted-foreground">
+                                    Find anything in seconds
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Tech Stack -->
+            <section class="py-20 px-4 bg-muted/30">
+                <div class="max-w-5xl mx-auto">
+                    <h2
+                        class="tech-title text-3xl md:text-4xl font-bold text-center mb-4"
+                    >
+                        Built with the modern stack
+                    </h2>
+                    <p class="text-center text-muted-foreground mb-16">
+                        Showcasing the power of cutting-edge technologies
+                    </p>
+
+                    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <div
+                            class="tech-card p-6 rounded-lg border border-border bg-background text-center"
+                        >
+                            <h3 class="text-lg font-semibold mb-2">
+                                TanStack Start
+                            </h3>
+                            <p class="text-sm text-muted-foreground">
+                                File-based routing, streaming, fast DX
+                            </p>
+                        </div>
+
+                        <div
+                            class="tech-card p-6 rounded-lg border border-border bg-background text-center"
+                        >
+                            <h3 class="text-lg font-semibold mb-2">Convex</h3>
+                            <p class="text-sm text-muted-foreground">
+                                Real-time database + backend sync
+                            </p>
+                        </div>
+
+                        <div
+                            class="tech-card p-6 rounded-lg border border-border bg-background text-center"
+                        >
+                            <h3 class="text-lg font-semibold mb-2">
+                                Cloudflare
+                            </h3>
+                            <p class="text-sm text-muted-foreground">
+                                Global edge network & CDN
+                            </p>
+                        </div>
+
+                        <div
+                            class="tech-card p-6 rounded-lg border border-border bg-background text-center"
+                        >
+                            <h3 class="text-lg font-semibold mb-2">Netlify</h3>
+                            <p class="text-sm text-muted-foreground">
+                                Continuous deployment & hosting
+                            </p>
+                        </div>
+
+                        <div
+                            class="tech-card p-6 rounded-lg border border-border bg-background text-center"
+                        >
+                            <h3 class="text-lg font-semibold mb-2">
+                                CodeRabbit
+                            </h3>
+                            <p class="text-sm text-muted-foreground">
+                                AI-powered PR reviews
+                            </p>
+                        </div>
+
+                        <div
+                            class="tech-card p-6 rounded-lg border border-border bg-background text-center"
+                        >
+                            <h3 class="text-lg font-semibold mb-2">
+                                Open Source
+                            </h3>
+                            <p class="text-sm text-muted-foreground">
+                                100% open, fork & remix
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- CTA Section -->
+            <section class="py-20 px-4">
+                <div class="max-w-3xl mx-auto text-center">
+                    <h2 class="cta-title text-3xl md:text-5xl font-bold mb-6">
+                        Open your magical inventory today
+                    </h2>
+                    <p class="text-lg text-muted-foreground mb-8">
+                        Collaborative storage for anything — with real-time
+                        enchantment.
+                    </p>
+
+                    <div
+                        class="cta-final flex flex-col sm:flex-row gap-4 justify-center mb-8"
+                    >
+                        <a
+                            href="https://demo.echest.app/"
+                            class="inline-flex items-center justify-center px-8 py-3 rounded-lg bg-primary text-primary-foreground font-medium hover:opacity-90 transition-opacity"
+                        >
+                            Sign in with GitHub
+                        </a>
+                        <a
+                            href="https://demo.echest.app/"
+                            class="inline-flex items-center justify-center px-8 py-3 rounded-lg border border-input bg-background font-medium hover:bg-muted transition-colors"
+                        >
+                            Try anonymously
+                        </a>
+                    </div>
+
+                    <a
+                        href="https://github.com/anirudhisonline/echest.app"
+                        class="github-link text-muted-foreground hover:text-foreground transition-colors text-sm"
+                    >
+                        View on GitHub →
+                    </a>
+                </div>
+            </section>
+
+            <!-- Footer -->
+            <footer class="py-8 px-4 border-t border-border">
+                <div
+                    class="max-w-6xl mx-auto text-center text-sm text-muted-foreground"
+                >
+                    <p>Built for the TanStack × Convex Hackathon</p>
+                </div>
+            </footer>
+        </div>
 
         <script>
+            // Dark mode based on system preference
+            if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+                document.documentElement.classList.add("dark");
+            }
+
+            // Listen for system theme changes
+            window
+                .matchMedia("(prefers-color-scheme: dark)")
+                .addEventListener("change", (e) => {
+                    if (e.matches) {
+                        document.documentElement.classList.add("dark");
+                    } else {
+                        document.documentElement.classList.remove("dark");
+                    }
+                });
+
             gsap.registerPlugin(ScrollTrigger);
 
-            // Logo animation - continuous floating
-            gsap.to(".logo-container svg", {
-                y: -15,
-                duration: 2,
-                ease: "power1.inOut",
-                yoyo: true,
-                repeat: -1,
-            });
+            // Chest opening animation
+            const chestTop = document.querySelector(".chest-top");
+            const chestLoader = document.getElementById("chest-loader");
+            const mainContent = document.getElementById("main-content");
 
-            // Logo rotation on scroll
-            gsap.to(".logo-container svg", {
-                rotation: 360,
-                scrollTrigger: {
-                    trigger: ".logo-container",
-                    start: "top top",
-                    end: "bottom top",
-                    scrub: 1,
+            const timeline = gsap.timeline({
+                onComplete: () => {
+                    gsap.to(chestLoader, {
+                        opacity: 0,
+                        duration: 0.5,
+                        onComplete: () => {
+                            chestLoader.style.display = "none";
+                            gsap.to(mainContent, { opacity: 1, duration: 0.5 });
+                            initScrollAnimations();
+                        },
+                    });
                 },
             });
 
-            // Hero fade in
-            gsap.from(".hero-title", {
-                opacity: 0,
-                y: 30,
-                duration: 1,
-                delay: 0.2,
-            });
-
-            gsap.from(".hero-subtitle", {
-                opacity: 0,
-                y: 30,
-                duration: 1,
-                delay: 0.4,
-            });
-
-            gsap.from(".hero-description", {
-                opacity: 0,
-                y: 30,
-                duration: 1,
-                delay: 0.6,
-            });
-
-            gsap.from(".badge", {
-                opacity: 0,
-                scale: 0.9,
-                duration: 1,
-                delay: 0.8,
-            });
-
-            gsap.from(".cta-buttons", {
-                opacity: 0,
-                y: 20,
-                duration: 1,
-                delay: 1,
-            });
-
-            gsap.from(".demo-notice", {
-                opacity: 0,
-                y: 20,
-                duration: 1,
-                delay: 1.2,
-            });
-
-            // Feature cards stagger
-            gsap.from(".feature-card", {
-                opacity: 0,
-                y: 50,
-                stagger: 0.1,
-                duration: 0.8,
-                scrollTrigger: {
-                    trigger: ".features-title",
-                    start: "top 80%",
+            // Particles appear first
+            timeline.fromTo(
+                ".text-secondary",
+                { opacity: 0, scale: 0 },
+                {
+                    opacity: 0.7,
+                    scale: 1,
+                    duration: 0.5,
+                    stagger: 0.1,
+                    ease: "back.out",
                 },
-            });
+            );
 
-            // Steps animation
-            gsap.from(".step-item", {
-                opacity: 0,
-                x: -50,
-                stagger: 0.2,
-                duration: 0.8,
-                scrollTrigger: {
-                    trigger: ".steps-title",
-                    start: "top 80%",
-                },
-            });
-
-            // Tech cards
-            gsap.from(".tech-card", {
-                opacity: 0,
-                scale: 0.9,
-                stagger: 0.1,
-                duration: 0.6,
-                scrollTrigger: {
-                    trigger: ".tech-title",
-                    start: "top 80%",
-                },
-            });
-
-            // Final CTA
-            gsap.from(".cta-title", {
-                opacity: 0,
-                y: 30,
-                duration: 1,
-                scrollTrigger: {
-                    trigger: ".cta-title",
-                    start: "top 80%",
-                },
-            });
-
-            gsap.from(".cta-final", {
-                opacity: 0,
-                y: 20,
-                duration: 1,
+            // Chest opens with lid rotating from hinge
+            timeline.to(chestTop, {
+                rotation: -110,
+                transformOrigin: "bottom left",
+                duration: 1.2,
+                ease: "power2.out",
                 delay: 0.3,
-                scrollTrigger: {
-                    trigger: ".cta-title",
-                    start: "top 80%",
-                },
             });
 
-            gsap.from(".github-link", {
-                opacity: 0,
-                duration: 1,
-                delay: 0.6,
-                scrollTrigger: {
-                    trigger: ".cta-title",
-                    start: "top 80%",
+            // Purple particles float up
+            timeline.to(
+                ".text-secondary",
+                {
+                    y: -80,
+                    opacity: 0,
+                    duration: 1,
+                    stagger: 0.1,
+                    ease: "power1.in",
                 },
-            });
+                "-=0.8",
+            );
+
+            // Content emerges from chest
+            timeline.fromTo(
+                ".chest-container",
+                { scale: 1 },
+                { scale: 1.15, duration: 0.4, ease: "power1.out" },
+                "-=0.6",
+            );
+
+            function initScrollAnimations() {
+                // Logo animation - continuous floating
+                gsap.to(".logo-container svg", {
+                    y: -15,
+                    duration: 2,
+                    ease: "power1.inOut",
+                    yoyo: true,
+                    repeat: -1,
+                });
+
+                // Logo rotation on scroll
+                gsap.to(".logo-container svg", {
+                    rotation: 360,
+                    scrollTrigger: {
+                        trigger: ".logo-container",
+                        start: "top top",
+                        end: "bottom top",
+                        scrub: 1,
+                    },
+                });
+
+                // Hero fade in
+                gsap.from(".hero-title", {
+                    opacity: 0,
+                    y: 30,
+                    duration: 1,
+                    delay: 0.2,
+                });
+
+                gsap.from(".hero-subtitle", {
+                    opacity: 0,
+                    y: 30,
+                    duration: 1,
+                    delay: 0.4,
+                });
+
+                gsap.from(".hero-description", {
+                    opacity: 0,
+                    y: 30,
+                    duration: 1,
+                    delay: 0.6,
+                });
+
+                gsap.from(".badge", {
+                    opacity: 0,
+                    scale: 0.9,
+                    duration: 1,
+                    delay: 0.8,
+                });
+
+                gsap.from(".cta-buttons", {
+                    opacity: 0,
+                    y: 20,
+                    duration: 1,
+                    delay: 1,
+                });
+
+                gsap.from(".demo-notice", {
+                    opacity: 0,
+                    y: 20,
+                    duration: 1,
+                    delay: 1.2,
+                });
+
+                // Feature cards stagger
+                gsap.from(".feature-card", {
+                    opacity: 0,
+                    y: 50,
+                    stagger: 0.1,
+                    duration: 0.8,
+                    scrollTrigger: {
+                        trigger: ".features-title",
+                        start: "top 80%",
+                    },
+                });
+
+                // Steps animation
+                gsap.from(".step-item", {
+                    opacity: 0,
+                    x: -50,
+                    stagger: 0.2,
+                    duration: 0.8,
+                    scrollTrigger: {
+                        trigger: ".steps-title",
+                        start: "top 80%",
+                    },
+                });
+
+                // Tech cards
+                gsap.from(".tech-card", {
+                    opacity: 0,
+                    scale: 0.9,
+                    stagger: 0.1,
+                    duration: 0.6,
+                    scrollTrigger: {
+                        trigger: ".tech-title",
+                        start: "top 80%",
+                    },
+                });
+
+                // Final CTA
+                gsap.from(".cta-title", {
+                    opacity: 0,
+                    y: 30,
+                    duration: 1,
+                    scrollTrigger: {
+                        trigger: ".cta-title",
+                        start: "top 80%",
+                    },
+                });
+
+                gsap.from(".cta-final", {
+                    opacity: 0,
+                    y: 20,
+                    duration: 1,
+                    delay: 0.3,
+                    scrollTrigger: {
+                        trigger: ".cta-title",
+                        start: "top 80%",
+                    },
+                });
+
+                gsap.from(".github-link", {
+                    opacity: 0,
+                    duration: 1,
+                    delay: 0.6,
+                    scrollTrigger: {
+                        trigger: ".cta-title",
+                        start: "top 80%",
+                    },
+                });
+            }
         </script>
     </body>
 </html>
